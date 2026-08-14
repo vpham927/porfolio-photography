@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Photography portfolio — studies in light, geometry, and place."
+    />
+    <title>Viet Pham - London</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+
+    <script src="https://kit.fontawesome.com/428002c8fd.js" crossorigin="anonymous"></script>
+    <script>
+      document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Turns the lights on">
+      <i class="fa-solid fa-bolt-lightning" aria-hidden="true"></i>
+      <span class="theme-toggle__label" id="theme-toggle-label">Flash on</span>
+    </button>
+
+    <div id="page">
+      <main id="main">
+        <section class="hero" id="top" aria-label="Introduction">
+          <div class="hero__content">
+            <h1 class="hero__name">Viet Pham</h1>
+            <p class="hero__tagline">London</p>
+            <nav class="hero__nav" aria-label="Primary">
+              <a class="nav-btn" href="#resume">Curriculum Vitae</a>
+              <a class="nav-btn" href="#photographs">Photography</a>
+              <a class="nav-btn" href="#projects">Current Projects</a>
+            </nav>
+          </div>
+          <a class="explore" href="#resume" aria-label="Explore resume">
+            <span class="explore__label">Explore</span>
+            <span class="explore__arrow" aria-hidden="true"></span>
+          </a>
+        </section>
+
+        <section class="section" id="resume" aria-labelledby="resume-title">
+          <header class="section__header">
+            <h2 class="section__title" id="resume-title">Curriculum Vitae</h2>
+            <ul class="resume__contact">
+              <li><i class="fa-solid fa-at"></i><a href="mailto:pha927@gmail.com">Email Me</a></li>
+              <li><i class="fa-brands fa-linkedin"></i><a href="https://www.linkedin.com/in/viet-pham-018946b7/">LinkedIn</a></li>
+              <li><i class="fa-brands fa-github"></i><a href="https://github.com/viet-pham">GitHub</a></li>
+              <li><i class="fa-solid fa-file-arrow-down"></i><a href="https://www.viet-pham.co.uk/CV.pdf">Download PDF</a></li>
+            </ul>
+            <p id="resume-desc" class="section__lede">
+              Tech lead with 10 years of experience delivering high-tier product support and driving continuous product improvements. Highly respected internally and widely recognized by clients as a trusted, go-to problem solver who is frequently requested by name to resolve complex technical issues. A fast learner with a passion for emerging tech, dedicated to bridging the gap between engineering teams and high-value clients to ensure seamless product experiences.
+            </p>
+          </header>
+
+          <div class="resume">
+            <section class="resume__section" aria-labelledby="exp-heading">
+              <h3 id="exp-heading">Employment History</h3>
+              <article class="resume__item">
+                <div class="resume__meta">
+                  <h4>Squiz, London - Tech Lead/Technical Consultant</h4>
+                  <p>FEBRUARY 2021 - PRESENT</p>
+                </div>
+                <p class="resume__stack">Tech Stack: Freemarker, HTML, CSS, Linux, GitLab, Groovy, Bash, Cloudflare</p>
+                <ul class="resume__list">
+                  <li>Led the migration of legacy search solutions to a modern SaaS environment on AWS</li>
+                  <li>Oversaw the technical planning and execution of custom search implementations for enterprise clients</li>
+                  <li>Provided pre-sales support by developing tailored proof-of-concept solutions</li>
+                  <li>Authored and maintained technical documentation to support internal teams and client onboarding</li>
+                  <li>Collaborated cross-functionally with product teams to design and refine new product features</li>
+                </ul>
+              </article>
+              <article class="resume__item">
+                <div class="resume__meta">
+                  <h4>Squiz, London - Application Support Engineer</h4>
+                  <p>JULY 2019 - FEBRUARY 2021</p>
+                </div>
+                <ul class="resume__list">
+                  <li>Managed support tickets and collaborated with client developers to troubleshoot technical issues</li>
+                  <li>Developed and deployed tailored search solutions; monitored system health using Nagios</li>
+                  <li>Created an automated Slack bot using Python and BeautifulSoup for real-time service monitoring</li>
+                  <li>Maintained platform security and reliability by managing SSL certificates, patching, and upgrades</li>
+                  <li>Submitted detailed R&amp;D tickets to address bugs and ensure timely resolution of client-reported issues</li>
+                  <li>Consistently delivered high client satisfaction through reliable product support.</li>
+                </ul>
+              </article>
+              <article class="resume__item">
+                <div class="resume__meta">
+                  <h4>Empello, London - Systems Administrator/Operations Engineer/Support Manager</h4>
+                  <p>APRIL 2015 - JULY 2019</p>
+                </div>
+                <p class="resume__stack">Tech Stack: AWS, Javascript, Docker, Squid Proxy VPN, Linux, Python,</p>
+                <ul class="resume__list">
+                  <li>Spearheaded the transition to Docker; engineered images for the FraudStop project and automated builds via AWS CodePipeline.</li>
+                  <li>Designed and deployed scalable AWS ECS clusters and Docker Swarm environments to improve application reliability.</li>
+                  <li>Re-engineered the Guardian web scraper into a scalable, cloud-native application using Docker and AWS.</li>
+                  <li>Configured and maintained a fleet of 100+ worldwide Squid proxy servers (VPNs) on CentOS, ensuring high availability for compliance testing.</li>
+                  <li>Managed comprehensive backup strategies for in-house software and performed routine server maintenance across Ubuntu/CentOS environments.</li>
+                  <li>Managed end-to-end technical support for 30+ on-site users and a global network of contractors</li>
+                  <li>Leveraged custom Python scripts to deliver automated mobile advertising results to analysts; provided technical feedback to developers to refine script logic and output accuracy.</li>
+                  <li>Conducted manual testing for in-house software (Appfarm, FraudScan), providing critical feedback to the development team.</li>
+                  <li>Led onboarding and technical training for new hires.</li>
+                </ul>
+              </article>
+            </section>
+
+            <div class="resume__row">
+              <section class="resume__section" aria-labelledby="edu-heading">
+                <h3 id="edu-heading">Education</h3>
+                <article class="resume__item">
+                  <div class="resume__meta">
+                    <h4>BSC (Hons)Games Development and Multimedia Technology</h4>
+                    <p>University of Greenwich, London - 2009-2012</p>
+                  </div>
+                </article>
+              </section>
+
+              <section class="resume__section" aria-labelledby="hobbies-heading">
+                <h3 id="hobbies-heading">Hobbies</h3>
+                <ul class="resume__list">
+                  <li>Mixing electronic music</li>
+                  <li>Photography</li>
+                  <li>Attending music shows</li>
+                  <li>eSports and gaming</li>
+                  <li>Bouldering</li>
+                </ul>
+              </section>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="photographs" aria-labelledby="photographs-heading">
+          <header class="section__header">
+            <p class="section__eyebrow">Selected work</p>
+            <h2 class="section__title" id="photographs-heading">Photographs</h2>
+          </header>
+          <div class="gallery" id="gallery"></div>
+        </section>
+
+        <section class="section" id="projects" aria-labelledby="projects-heading">
+          <header class="section__header">
+            <p class="section__eyebrow"></p>
+            <h2 class="section__title" id="projects-heading">Current Projects</h2>
+          </header>
+          <ul class="projects">
+            <li class="project">
+              <h3 class="project__title">
+                Drizzle.Live
+                <a 
+                  href="https://festival-weather.vercel.app/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  aria-label="Open Drizzle.Live in a new tab"
+                >
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+              </h3>
+              <p class="project__text">
+                A weather app designed for festivals using multiple weather APIs to provide accurate and reliable weather information.
+              </p>
+            </li>
+          </ul>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>© <span id="year"></span> Viet Pham. All rights reserved.</p>
+      </footer>
+    </div>
+
+    <!-- Photo detail lightbox -->
+    <div
+      class="photo-modal"
+      id="photo-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="photo-title"
+      aria-describedby="photo-desc"
+      hidden
+    >
+      <div class="photo-modal__backdrop" data-close-photo></div>
+      <div class="photo-modal__dialog" role="document">
+        <div class="photo-modal__visual">
+          <div class="photo-modal__toolbar">
+            <button type="button" class="text-btn" id="photo-back">
+              ← Back to Grid
+            </button>
+            <div class="photo-modal__toolbar-end">
+              <button type="button" class="text-btn" id="photo-next">
+                Next Photo →
+              </button>
+              <button
+                type="button"
+                class="modal__close modal__close--photo"
+                data-close-photo
+                aria-label="Close photograph"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+          </div>
+          <figure class="photo-modal__figure">
+            <img id="photo-image" alt="" />
+          </figure>
+        </div>
+
+        <aside class="photo-modal__meta" aria-label="Photograph details">
+          <h2 id="photo-title"></h2>
+          <p id="photo-desc" class="photo-modal__description"></p>
+
+          <section class="specs" aria-labelledby="specs-heading">
+            <h3 id="specs-heading">Technical Specs</h3>
+            <dl id="photo-specs"></dl>
+          </section>
+
+          <section class="recipe" aria-labelledby="recipe-heading">
+            <p class="recipe__label">Fujifilm Recipe</p>
+            <h3 id="recipe-heading" class="recipe__title"></h3>
+            <dl id="photo-recipe"></dl>
+          </section>
+        </aside>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,3 @@
+node_modules/
+photos/originals/*
+!photos/originals/.gitkeep

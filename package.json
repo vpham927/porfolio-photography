@@ -1,0 +1,10 @@
+{
+  "name": "vibe-portfolio-photography",
+  "private": true,
+  "scripts": {
+    "photos": "node scripts/process-photos.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.3"
+  }
+}
