@@ -1,0 +1,17 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - echo "Static site — skipping install"
+    build:
+      commands:
+        - mkdir -p dist
+        - cp index.html styles.css script.js dist/
+        - if [ -d photos ]; then cp -R photos dist/; fi
+  artifacts:
+    baseDirectory: dist
+    files:
+      - "**/*"
+  cache:
+    paths: []
