@@ -36,8 +36,8 @@
             <p class="hero__tagline">London</p>
             <nav class="hero__nav" aria-label="Primary">
               <a class="nav-btn" href="#resume">Curriculum Vitae</a>
-              <a class="nav-btn" href="#photographs">Photography</a>
               <a class="nav-btn" href="#projects">Current Projects</a>
+              <a class="nav-btn" href="#photographs">Photography</a>
             </nav>
           </div>
           <a class="explore" href="#resume" aria-label="Explore resume">
@@ -132,41 +132,37 @@
                   <li>Bouldering</li>
                 </ul>
               </section>
+
+              <section class="resume__section" id="projects" aria-labelledby="projects-heading">
+                <h3 id="projects-heading">Current Projects</h3>
+                <article class="resume__item">
+                  <div class="resume__meta">
+                    <h4>
+                      Drizzle.Live
+                      <a
+                        href="https://festival-weather.vercel.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Open Drizzle.Live in a new tab"
+                      >
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                      </a>
+                    </h4>
+                  </div>
+                  <p>
+                    A weather app designed for festivals using multiple weather APIs to provide accurate and reliable weather information.
+                  </p>
+                </article>
+              </section>
             </div>
           </div>
         </section>
 
         <section class="section" id="photographs" aria-labelledby="photographs-heading">
           <header class="section__header">
-            <p class="section__eyebrow">Selected work</p>
             <h2 class="section__title" id="photographs-heading">Photographs</h2>
           </header>
           <div class="gallery" id="gallery"></div>
-        </section>
-
-        <section class="section" id="projects" aria-labelledby="projects-heading">
-          <header class="section__header">
-            <p class="section__eyebrow"></p>
-            <h2 class="section__title" id="projects-heading">Current Projects</h2>
-          </header>
-          <ul class="projects">
-            <li class="project">
-              <h3 class="project__title">
-                Drizzle.Live
-                <a 
-                  href="https://festival-weather.vercel.app/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  aria-label="Open Drizzle.Live in a new tab"
-                >
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-              </h3>
-              <p class="project__text">
-                A weather app designed for festivals using multiple weather APIs to provide accurate and reliable weather information.
-              </p>
-            </li>
-          </ul>
         </section>
       </main>
 
@@ -190,7 +186,7 @@
         <div class="photo-modal__visual">
           <div class="photo-modal__toolbar">
             <button type="button" class="text-btn" id="photo-back">
-              ← Back to Grid
+              ← Back
             </button>
             <div class="photo-modal__toolbar-end">
               <button type="button" class="text-btn" id="photo-next">
@@ -216,7 +212,7 @@
           <p id="photo-desc" class="photo-modal__description"></p>
 
           <section class="specs" aria-labelledby="specs-heading">
-            <h3 id="specs-heading">Technical Specs</h3>
+            <h3 id="specs-heading">Camera Information</h3>
             <dl id="photo-specs"></dl>
           </section>
 

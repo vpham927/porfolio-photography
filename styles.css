@@ -282,9 +282,10 @@ button {
 /* Gallery */
 
 .gallery {
-  column-width: 280px;
-  column-gap: 1rem;
+  width: 100%;
   max-width: var(--max);
+  column-count: 3;
+  column-gap: 1rem;
   margin: 0 auto;
 }
 
@@ -383,8 +384,18 @@ button {
 
 .resume__row {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+}
+
+.resume__row h4 a {
+  margin-left: 0.35rem;
+  color: var(--muted);
+}
+
+.resume__row h4 a:hover,
+.resume__row h4 a:focus-visible {
+  color: var(--text);
 }
 
 .resume__row .resume__meta {
@@ -653,6 +664,16 @@ button {
 
   .resume__row {
     grid-template-columns: 1fr;
+  }
+
+  .gallery {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 560px) {
+  .gallery {
+    column-count: 1;
   }
 }
 
