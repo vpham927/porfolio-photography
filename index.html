@@ -23,22 +23,26 @@
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Turns the lights on">
-      <i class="fa-solid fa-bolt-lightning" aria-hidden="true"></i>
-      <span class="theme-toggle__label" id="theme-toggle-label">Flash on</span>
-    </button>
+    <div class="site-bar">
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Turns the lights on">
+        <i class="fa-solid fa-bolt-lightning" aria-hidden="true"></i>
+        <span class="theme-toggle__label" id="theme-toggle-label">Flash on</span>
+      </button>
+      <nav class="site-nav" aria-label="Primary">
+        <a class="site-bar__btn" href="#resume" data-home-target="resume">Curriculum Vitae</a>
+        <a class="site-bar__btn" href="#projects" data-home-target="projects">Current Projects</a>
+        <a class="site-bar__btn" href="#photographs" data-open-photos>Photography</a>
+      </nav>
+    </div>
 
-    <div id="page">
+    <div class="site-deck" id="site-deck">
+      <div class="site-track">
+        <div class="home-pane" id="page">
       <main id="main">
         <section class="hero" id="top" aria-label="Introduction">
           <div class="hero__content">
             <h1 class="hero__name">Viet Pham</h1>
             <p class="hero__tagline">London</p>
-            <nav class="hero__nav" aria-label="Primary">
-              <a class="nav-btn" href="#resume">Curriculum Vitae</a>
-              <a class="nav-btn" href="#projects">Current Projects</a>
-              <a class="nav-btn" href="#photographs">Photography</a>
-            </nav>
           </div>
           <a class="explore" href="#resume" aria-label="Explore resume">
             <span class="explore__label">Explore</span>
@@ -157,18 +161,20 @@
             </div>
           </div>
         </section>
-
-        <section class="section" id="photographs" aria-labelledby="photographs-heading">
-          <header class="section__header">
-            <h2 class="section__title" id="photographs-heading">Photographs</h2>
-          </header>
-          <div class="gallery" id="gallery"></div>
-        </section>
       </main>
 
       <footer class="footer">
         <p>© <span id="year"></span> Viet Pham. All rights reserved.</p>
       </footer>
+        </div>
+
+        <section class="photo-pane section" id="photographs" aria-labelledby="photographs-heading">
+          <header class="section__header">
+            <h2 class="section__title" id="photographs-heading">Photographs</h2>
+          </header>
+          <div class="gallery" id="gallery"></div>
+        </section>
+      </div>
     </div>
 
     <!-- Photo detail lightbox -->

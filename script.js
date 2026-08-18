@@ -221,8 +221,10 @@ const FOCUSABLE =
 
 const galleryEl = document.getElementById("gallery");
 const photoModal = document.getElementById("photo-modal");
-const pageEl = document.getElementById("page");
+const siteDeck = document.getElementById("site-deck");
 const yearEl = document.getElementById("year");
+const homePane = document.getElementById("page");
+const photoPane = document.getElementById("photographs");
 
 const photoImage = document.getElementById("photo-image");
 const photoTitle = document.getElementById("photo-title");
@@ -323,7 +325,7 @@ function getFocusable(container) {
 }
 
 function setPageInert(inert) {
-  pageEl.inert = inert;
+  siteDeck.inert = inert;
   document.body.classList.toggle("modal-open", inert);
 }
 
@@ -407,19 +409,93 @@ galleryEl.addEventListener("click", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (!activeModal) return;
+  if (activeModal) {
+    if (event.key === "Escape") {
+      closeModal(activeModal);
+      return;
+    }
 
-  if (event.key === "Escape") {
-    closeModal(activeModal);
+    if (activeModal === photoModal && event.key === "ArrowRight") {
+      showNextPhoto();
+      return;
+    }
+
+    trapFocus(event, activeModal);
     return;
   }
 
-  if (activeModal === photoModal && event.key === "ArrowRight") {
-    showNextPhoto();
-    return;
+  if (event.key === "Escape" && isPhotosView()) {
+    openHome("top");
   }
-
-  trapFocus(event, activeModal);
 });
 
 renderGallery();
+
+function isPhotosView() {
+  return document.documentElement.dataset.view === "photos";
+}
+
+function scrollHomeTo(id, smooth = true) {
+  const target = document.getElementById(id);
+  if (!homePane || !target) return;
+
+  const top =
+    target.getBoundingClientRect().top -
+    homePane.getBoundingClientRect().top +
+    homePane.scrollTop;
+
+  homePane.scrollTo({ top, behavior: smooth ? "smooth" : "auto" });
+}
+
+function openPhotos({ skipHistory = false } = {}) {
+  document.documentElement.dataset.view = "photos";
+  photoPane.scrollTo({ top: 0 });
+
+  if (!skipHistory && location.hash !== "#photographs") {
+    history.pushState({ view: "photos" }, "", "#photographs");
+  }
+}
+
+function openHome(id, { skipHistory = false, smooth = false } = {}) {
+  document.documentElement.dataset.view = "home";
+  if (id) scrollHomeTo(id, smooth);
+
+  if (!skipHistory) {
+    history.pushState({ view: "home" }, "", id ? `#${id}` : "#top");
+  }
+}
+
+function syncViewFromHash() {
+  if (location.hash === "#photographs") {
+    openPhotos({ skipHistory: true });
+    return;
+  }
+
+  const id = location.hash.replace("#", "");
+  openHome(id || "top", { skipHistory: true });
+}
+
+document.querySelectorAll("[data-open-photos]").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    openPhotos();
+  });
+});
+
+document.querySelectorAll("[data-home-target]").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    openHome(link.dataset.homeTarget, { smooth: !isPhotosView() });
+  });
+});
+
+document.querySelectorAll(".explore").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const id = link.getAttribute("href").replace("#", "");
+    event.preventDefault();
+    openHome(id, { smooth: true });
+  });
+});
+
+window.addEventListener("popstate", syncViewFromHash);
+syncViewFromHash();
