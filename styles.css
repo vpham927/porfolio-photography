@@ -314,6 +314,16 @@ button {
   font-weight: 300;
 }
 
+.photo-add-hint {
+  margin: 0.85rem 0 0;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  font-weight: 300;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
 /* Gallery */
 
 .gallery {

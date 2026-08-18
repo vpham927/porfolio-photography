@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add photographs</title>
+    <style>
+      :root {
+        --bg: #121212;
+        --panel: #1a1a1a;
+        --text: #ffffff;
+        --muted: #888888;
+        --border: #2a2a2a;
+        --accent: #ffffff;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        padding: 2rem 1.25rem 4rem;
+      }
+      main { max-width: 860px; margin: 0 auto; }
+      h1 { font-weight: 300; letter-spacing: 0.04em; margin: 0 0 0.4rem; }
+      .lede { color: var(--muted); margin: 0 0 1.8rem; font-weight: 300; }
+      .drop {
+        display: grid;
+        place-items: center;
+        min-height: 180px;
+        padding: 1.5rem;
+        border: 1px dashed var(--border);
+        background: var(--panel);
+        color: var(--muted);
+        text-align: center;
+        cursor: pointer;
+      }
+      .drop.is-over { border-color: var(--text); color: var(--text); }
+      .drop input { display: none; }
+      .cards { display: grid; gap: 1.25rem; margin-top: 1.5rem; }
+      .card {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 1rem;
+        padding: 1rem;
+        border: 1px solid var(--border);
+        background: var(--panel);
+      }
+      .card img { width: 100%; height: 160px; object-fit: cover; background: #0c0c0c; }
+      label { display: grid; gap: 0.3rem; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+      input, select, textarea {
+        width: 100%;
+        padding: 0.55rem 0.65rem;
+        border: 1px solid var(--border);
+        background: #141414;
+        color: var(--text);
+        font: inherit;
+      }
+      textarea { min-height: 4.5rem; resize: vertical; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .actions { display: flex; gap: 0.6rem; margin-top: 0.9rem; }
+      button {
+        font: inherit;
+        cursor: pointer;
+        border: 1px solid var(--text);
+        background: transparent;
+        color: var(--text);
+        padding: 0.55rem 0.9rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+      }
+      button.primary { background: var(--text); color: var(--bg); }
+      button:disabled { opacity: 0.45; cursor: wait; }
+      .status { margin-top: 1rem; color: var(--muted); }
+      .status.error { color: #e07070; }
+      .status.ok { color: #9ad39a; }
+      .log-panel {
+        margin-top: 1.8rem;
+        border: 1px solid var(--border);
+        background: #0c0c0c;
+      }
+      .log-panel header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.65rem 0.8rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .log-panel header button {
+        padding: 0.3rem 0.55rem;
+        font-size: 0.68rem;
+      }
+      .log {
+        margin: 0;
+        padding: 0.85rem 0.9rem 1rem;
+        min-height: 180px;
+        max-height: 320px;
+        overflow: auto;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.78rem;
+        line-height: 1.55;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .log .time { color: #666; }
+      .log .error { color: #e07070; }
+      .hint { margin-top: 1.5rem; font-size: 0.85rem; color: var(--muted); }
+      .command {
+        margin: 0 0 1.6rem;
+        padding: 0.9rem 1rem;
+        border: 1px solid var(--border);
+        background: #0c0c0c;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.85rem;
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
+      @media (max-width: 700px) {
+        .card, .grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Add photographs</h1>
+      <p class="lede">Drop camera JPEGs here. Images are resized with Sharp and appended to the gallery. No database.</p>
+      <pre class="command">cd /Users/viet/vibe-portfolio-photography
+npm run add-photos</pre>
+      <label class="drop" id="drop">
+        Drop photos here, or click to choose
+        <input id="file-input" type="file" accept="image/*" multiple />
+      </label>
+      <div class="cards" id="cards"></div>
+      <p class="status" id="status"></p>
+      <section class="log-panel" aria-label="Script output">
+        <header>
+          Output log
+          <button type="button" id="clear-log">Clear</button>
+        </header>
+        <pre class="log" id="log"></pre>
+      </section>
+      <p class="hint">Recipes live in <code>scripts/recipes.mjs</code>. Add a new recipe there, restart this tool, then pick it from the dropdown.</p>
+    </main>
+    <script>
+      const drop = document.getElementById("drop");
+      const fileInput = document.getElementById("file-input");
+      const cards = document.getElementById("cards");
+      const statusEl = document.getElementById("status");
+      const logEl = document.getElementById("log");
+      const clearLog = document.getElementById("clear-log");
+      let recipes = ["None"];
+      let defaults = { camera: "", lens: "" };
+
+      function appendLog(entry) {
+        const line = document.createElement("div");
+        if (entry.level === "error") line.className = "error";
+        const time = document.createElement("span");
+        time.className = "time";
+        time.textContent = entry.time ? `[${entry.time}] ` : "";
+        line.append(time, document.createTextNode(entry.message));
+        logEl.appendChild(line);
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      function logLocal(message, level = "info") {
+        appendLog({
+          time: new Date().toISOString().slice(11, 23),
+          level,
+          message,
+        });
+      }
+
+      const logSource = new EventSource("/api/logs");
+      logSource.onmessage = (event) => {
+        try {
+          appendLog(JSON.parse(event.data));
+        } catch {
+          logLocal(event.data);
+        }
+      };
+      logSource.onerror = () => {};
+      clearLog.addEventListener("click", () => {
+        logEl.replaceChildren();
+      });
+
+      function setStatus(message, kind = "") {
+        statusEl.className = `status ${kind}`.trim();
+        statusEl.textContent = message;
+      }
+
+      function field(name, label, value = "", type = "text") {
+        const wrap = document.createElement("label");
+        wrap.textContent = label;
+        const input = document.createElement(type === "textarea" ? "textarea" : "input");
+        if (type !== "textarea") input.type = type;
+        input.name = name;
+        input.value = value;
+        wrap.appendChild(input);
+        return wrap;
+      }
+
+      async function previewExif(file) {
+        const response = await fetch("/api/preview", { method: "POST", body: file });
+        if (!response.ok) return defaults;
+        return response.json();
+      }
+
+      async function addCard(file) {
+        logLocal(`dropped ${file.name} (${Math.round(file.size / 1024)} KB)`);
+        const exif = await previewExif(file);
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const img = document.createElement("img");
+        img.alt = file.name;
+        img.src = URL.createObjectURL(file);
+
+        const form = document.createElement("form");
+        const titleGuess = file.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+        form.appendChild(field("title", "Title", titleGuess));
+        form.appendChild(field("description", "Description (optional)", "", "textarea"));
+
+        const recipeLabel = document.createElement("label");
+        recipeLabel.textContent = "Recipe";
+        const select = document.createElement("select");
+        select.name = "recipeTitle";
+        recipes.forEach((name) => {
+          const option = document.createElement("option");
+          option.value = name;
+          option.textContent = name;
+          select.appendChild(option);
+        });
+        recipeLabel.appendChild(select);
+        form.appendChild(recipeLabel);
+
+        const grid = document.createElement("div");
+        grid.className = "grid";
+        grid.append(
+          field("camera", "Camera", exif.camera || defaults.camera),
+          field("lens", "Lens", exif.lens || defaults.lens),
+          field("iso", "ISO", exif.iso || ""),
+          field("shutter", "Shutter", exif.shutter || ""),
+          field("aperture", "Aperture", exif.aperture || "")
+        );
+        form.appendChild(grid);
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+        const addBtn = document.createElement("button");
+        addBtn.type = "submit";
+        addBtn.className = "primary";
+        addBtn.textContent = "Add to gallery";
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.textContent = "Remove";
+        removeBtn.addEventListener("click", () => card.remove());
+        actions.append(addBtn, removeBtn);
+        form.appendChild(actions);
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          addBtn.disabled = true;
+          setStatus("Resizing and adding to the gallery…");
+          logLocal(`upload "${file.name}"`);
+          try {
+            const data = await fileToBase64(file);
+            const body = Object.fromEntries(new FormData(form).entries());
+            body.data = data;
+            const response = await fetch("/api/photo", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(body),
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || "Could not add photo.");
+            card.remove();
+            setStatus(`Added ${result.file}. Refresh the site to see it, then commit when you want it live.`, "ok");
+            logLocal(`client: added ${result.file}`);
+          } catch (error) {
+            addBtn.disabled = false;
+            setStatus(error.message, "error");
+            logLocal(error.message, "error");
+          }
+        });
+
+        card.append(img, form);
+        cards.appendChild(card);
+      }
+
+      function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const value = String(reader.result || "");
+            resolve(value.slice(value.indexOf(",") + 1));
+          };
+          reader.onerror = () => reject(new Error("Could not read file."));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function handleFiles(fileList) {
+        [...fileList]
+          .filter((file) => file.type.startsWith("image/"))
+          .forEach((file) => addCard(file));
+      }
+
+      drop.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        drop.classList.add("is-over");
+      });
+      drop.addEventListener("dragleave", () => drop.classList.remove("is-over"));
+      drop.addEventListener("drop", (event) => {
+        event.preventDefault();
+        drop.classList.remove("is-over");
+        handleFiles(event.dataTransfer.files);
+      });
+      fileInput.addEventListener("change", () => {
+        handleFiles(fileInput.files);
+        fileInput.value = "";
+      });
+
+      fetch("/api/recipes")
+        .then((res) => res.json())
+        .then((data) => {
+          recipes = data.recipes;
+          defaults = data.defaults;
+          logLocal(`loaded recipes: ${recipes.join(", ")}`);
+        })
+        .catch(() => {
+          setStatus("Could not load recipes. Is the local script running?", "error");
+          logLocal("Could not load recipes. Is the local script running?", "error");
+        });
+    </script>
+  </body>
+</html>

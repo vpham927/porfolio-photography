@@ -1,221 +1,3 @@
-const PHOTOGRAPHS = [
-  {
-    title: "Big Easy, Stratford",
-    image: "photos/thumbs/bw-stratford-bigeasy.jpg",
-    imageHiRes: "photos/full/bw-stratford-bigeasy.jpg",
-    aspect: "667 / 1000",
-    camera: "Fujifilm X-T30 III",
-    lens: "XF30MM F2.8R LM WR Macro",
-    iso: "500",
-    shutter: "1/180s",
-    aperture: "f/5.6",
-    recipeTitle: "Kodak T-Max 100 Hard Tone",
-    recipe: {
-      "Film Sim": "Monochrome+G",
-      "Monochromatic Color (Toning)": "WC 0 & MG 0 (Off)",
-      "Grain Effect": "Weak, Large",
-      "Color Chrome Effect": "Off",
-      "Color Chrome FX Blue": "Off",
-      "White Balance": "Daylight, -6 Red & -3 Blue",
-      "Dynamic Range": "DR200",
-      "Highlight": "+0.5",
-      "Shadow": "+2.5",
-      "Sharpness": "-1",
-      "High ISO NR": "-4",
-      "Clarity": "-1",
-    },
-  },
-  {
-    title: "Stratford Buildings #1",
-    image: "photos/thumbs/bw-stratford-building-2.jpg",
-    imageHiRes: "photos/full/bw-stratford-building-2.jpg",
-    aspect: "667 / 1000",
-    camera: "Fujifilm X-T30 III",
-    lens: "XF30MM F2.8R LM WR Macro",
-    iso: "200",
-    shutter: "1/180s",
-    aperture: "f/10",
-    recipeTitle: "Kodak T-Max 100 Hard Tone",
-    recipe: {
-      "Film Sim": "Monochrome+G",
-      "Monochromatic Color (Toning)": "WC 0 & MG 0 (Off)",
-      "Grain Effect": "Weak, Large",
-      "Color Chrome Effect": "Off",
-      "Color Chrome FX Blue": "Off",
-      "White Balance": "Daylight, -6 Red & -3 Blue",
-      "Dynamic Range": "DR200",
-      "Highlight": "+0.5",
-      "Shadow": "+2.5",
-      "Sharpness": "-1",
-      "High ISO NR": "-4",
-      "Clarity": "-1",
-    },
-  },
-  {
-    title: "Stratford Buildings #2",
-    image: "photos/thumbs/bw-stratford-building.jpg",
-    imageHiRes: "photos/full/bw-stratford-building.jpg",
-    aspect: "667 / 1000",
-    camera: "Fujifilm X-T30 III",
-    lens: "XF30MM F2.8R LM WR Macro",
-    iso: "80",
-    shutter: "1/180s",
-    aperture: "f/6.4",
-    recipeTitle: "Kodak T-Max 100 Hard Tone",
-    recipe: {
-      "Film Sim": "Monochrome+G",
-      "Monochromatic Color (Toning)": "WC 0 & MG 0 (Off)",
-      "Grain Effect": "Weak, Large",
-      "Color Chrome Effect": "Off",
-      "Color Chrome FX Blue": "Off",
-      "White Balance": "Daylight, -6 Red & -3 Blue",
-      "Dynamic Range": "DR200",
-      "Highlight": "+0.5",
-      "Shadow": "+2.5",
-      "Sharpness": "-1",
-      "High ISO NR": "-4",
-      "Clarity": "-1",
-    },
-  },
-  {
-    title: "Sunset, Stratford",
-    image: "photos/thumbs/bw-stratford-sun.jpg",
-    imageHiRes: "photos/full/bw-stratford-sun.jpg",
-    aspect: "1000 / 667",
-    camera: "Fujifilm X-T30 III",
-    lens: "XF30MM F2.8R LM WR Macro",
-    iso: "640",
-    shutter: "1/180s",
-    aperture: "f/10",
-    recipeTitle: "Kodak T-Max 100 Hard Tone",
-    recipe: {
-      "Film Sim": "Monochrome+G",
-      "Monochromatic Color (Toning)": "WC 0 & MG 0 (Off)",
-      "Grain Effect": "Weak, Large",
-      "Color Chrome Effect": "Off",
-      "Color Chrome FX Blue": "Off",
-      "White Balance": "Daylight, -6 Red & -3 Blue",
-      "Dynamic Range": "DR200",
-      "Highlight": "+0.5",
-      "Shadow": "+2.5",
-      "Sharpness": "-1",
-      "High ISO NR": "-4",
-      "Clarity": "-1",
-    },
-  },
-  {
-    title: "Chestnut Tree",
-    image: "photos/thumbs/colour-chestnut.jpg",
-    imageHiRes: "photos/full/colour-chestnut.jpg",
-    aspect: "1000 / 723",
-    camera: "Fujifilm X-T30 III",
-    lens: "XF30MM F2.8R LM WR Macro",
-    iso: "5000",
-    shutter: "1/180s",
-    aperture: "f/4.5",
-    recipeTitle: "None",
-    recipe: {},
-  },
-  {
-    title: "Flying Daisy",
-    image: "photos/thumbs/colour-fly-daisy.jpg",
-    imageHiRes: "photos/full/colour-fly-daisy.jpg",
-    aspect: "1000 / 667",
-    camera: "Fujifilm X-T30 III",
-    lens: "XF30MM F2.8R LM WR Macro",
-    iso: "2500",
-    shutter: "1/180s",
-    aperture: "f/8",
-    recipeTitle: "1976 Kodak",
-    recipe: {
-      "Film Sim": "Nostalgic Neg.",
-      Grain: "Strong, Small",
-      "Dynamic Range": "DR200",
-      "White Balance": "Auto, -2 Red & -4 Blue",
-      Highlights: "+1.5",
-      Shadows: "+3",
-      Color: "+4",
-      Sharpness: "-2",
-      "High ISO NR": "-4",
-      Clarity: "-3",
-    },
-  },
-  {
-    title: "Civic Facade, Noon",
-    description:
-      "Hard sun, no people. The building becomes a study in intervals — window, shadow, window — until the street falls away.",
-    image: "photos/thumbs/colour-liverpool-street.jpg",
-    imageHiRes: "photos/full/colour-liverpool-street.jpg",
-    aspect: "667 / 1000",
-    camera: "Fujifilm X-T30 III",
-    lens: "XF30MM F2.8R LM WR Macro",
-    iso: "80",
-    shutter: "1/180s",
-    aperture: "f/2.8",
-    recipeTitle: "1976 Kodak",
-    recipe: {
-      "Film Sim": "Nostalgic Neg.",
-      Grain: "Strong, Small",
-      "Dynamic Range": "DR200",
-      "White Balance": "Auto, -2 Red & -4 Blue",
-      Highlights: "+1.5",
-      Shadows: "+3",
-      Color: "+4",
-      Sharpness: "-2",
-      "High ISO NR": "-4",
-      Clarity: "-3",
-    },
-  },
-  {
-    title: "West Ham Stadium",
-    image: "photos/thumbs/colour-river-stadium.jpg",
-    imageHiRes: "photos/full/colour-river-stadium.jpg",
-    aspect: "1000 / 667",
-    camera: "Fujifilm X-T30 III",
-    lens: "XF30MM F2.8R LM WR Macro",
-    iso: "640",
-    shutter: "1/180s",
-    aperture: "f/4",
-    recipeTitle: "1976 Kodak",
-    recipe: {
-      "Film Sim": "Nostalgic Neg.",
-      Grain: "Strong, Small",
-      "Dynamic Range": "DR200",
-      "White Balance": "Auto, -2 Red & -4 Blue",
-      Highlights: "+1.5",
-      Shadows: "+3",
-      Color: "+4",
-      Sharpness: "-2",
-      "High ISO NR": "-4",
-      Clarity: "-3",
-    },
-  },
-  {
-    title: "Stratford City",
-    image: "photos/thumbs/colour-stratford-city.jpg",
-    imageHiRes: "photos/full/colour-stratford-city.jpg",
-    aspect: "1000 / 667",
-    camera: "Fujifilm X-T30 III",
-    lens: "XF30MM F2.8R LM WR Macro",
-    iso: "80",
-    shutter: "1/180s",
-    aperture: "f/2.8",
-    recipeTitle: "1976 Kodak",
-    recipe: {
-      "Film Sim": "Nostalgic Neg.",
-      Grain: "Strong, Small",
-      "Dynamic Range": "DR200",
-      "White Balance": "Auto, -2 Red & -4 Blue",
-      Highlights: "+1.5",
-      Shadows: "+3",
-      Color: "+4",
-      Sharpness: "-2",
-      "High ISO NR": "-4",
-      Clarity: "-3",
-    },
-  },
-];
-
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
@@ -274,7 +56,7 @@ function renderGallery() {
 
     const img = document.createElement("img");
     img.src = photo.image;
-    img.alt = photo.alt;
+    img.alt = photo.alt || photo.title;
     img.loading = "lazy";
     img.decoding = "async";
 
@@ -302,10 +84,14 @@ function populatePhoto(index) {
   activePhotoIndex = index;
 
   photoImage.src = photo.imageHiRes;
-  photoImage.alt = photo.alt;
+  photoImage.alt = photo.alt || photo.title;
   photoTitle.textContent = photo.title;
-  photoDesc.textContent = photo.description;
-  recipeHeading.textContent = photo.recipeTitle;
+  photoDesc.textContent = photo.description || "";
+  photoDesc.hidden = !photo.description;
+  recipeHeading.textContent = photo.recipeTitle || "None";
+
+  const recipeEntries = Object.entries(photo.recipe || {});
+  document.querySelector(".recipe").hidden = recipeEntries.length === 0;
 
   fillDefinitionList(photoSpecs, [
     ["Camera", photo.camera],
@@ -315,7 +101,7 @@ function populatePhoto(index) {
     ["Aperture", photo.aperture],
   ]);
 
-  fillDefinitionList(photoRecipe, Object.entries(photo.recipe));
+  fillDefinitionList(photoRecipe, recipeEntries);
 }
 
 function getFocusable(container) {

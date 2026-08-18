@@ -2,9 +2,11 @@
   "name": "vibe-portfolio-photography",
   "private": true,
   "scripts": {
-    "photos": "node scripts/process-photos.mjs"
+    "photos": "node scripts/process-photos.mjs",
+    "add-photos": "node scripts/add-photos.mjs"
   },
   "devDependencies": {
+    "exifr": "^7.1.3",
     "sharp": "^0.35.3"
   }
 }
