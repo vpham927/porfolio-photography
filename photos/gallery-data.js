@@ -305,5 +305,30 @@ const PHOTOGRAPHS = [
       "High ISO NR": "-4",
       "Clarity": "-3"
     }
+  },
+  {
+    "title": "DSCF0750",
+    "image": "photos/thumbs/dscf0750.jpg",
+    "imageHiRes": "photos/full/dscf0750.jpg",
+    "alt": "DSCF0750",
+    "aspect": "1000 / 667",
+    "camera": "FUJIFILM X-T30 III",
+    "lens": "XF30mmF2.8 R LM WR Macro",
+    "iso": "1250",
+    "shutter": "1/500s",
+    "aperture": "f/2.8",
+    "recipeTitle": "Reggie's Superia",
+    "recipe": {
+      "Film Sim": "Classic Negative",
+      "Grain": "Strong, Large",
+      "Dynamic Range": "DRAUTO",
+      "White Balance": "Auto, +1 Red & -3 Blue",
+      "Highlights": "-2",
+      "Shadows": "-1",
+      "Color": "+1",
+      "Sharpness": "-2",
+      "High ISO NR": "-4",
+      "Clarity": "-0"
+    }
   }
 ];

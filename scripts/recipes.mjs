@@ -29,4 +29,16 @@ export const RECIPES = {
     "High ISO NR": "-4",
     Clarity: "-3",
   },
+  "Reggie's Superia": {
+    "Film Sim": "Classic Negative",
+    Grain: "Strong, Large",
+    "Dynamic Range": "DRAUTO",
+    "White Balance": "Auto, +1 Red & -3 Blue",
+    Highlights: "-2",
+    Shadows: "-1",
+    Color: "+1",
+    Sharpness: "-2",
+    "High ISO NR": "-4",
+    Clarity: "-0",
+  },
 };
