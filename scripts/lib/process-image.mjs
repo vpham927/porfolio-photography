@@ -107,7 +107,16 @@ export async function readGallery() {
   return new Function(`return (${match[1]})`)();
 }
 
+export function photoTime(photo) {
+  const time = Date.parse(photo?.date || "");
+  return Number.isNaN(time) ? 0 : time;
+}
+
+export function sortPhotosByDate(photos) {
+  return [...photos].sort((a, b) => photoTime(b) - photoTime(a));
+}
+
 export async function writeGallery(photos) {
-  const body = `const PHOTOGRAPHS = ${JSON.stringify(photos, null, 2)};\n`;
+  const body = `const PHOTOGRAPHS = ${JSON.stringify(sortPhotosByDate(photos), null, 2)};\n`;
   await writeFile(GALLERY_DATA, body);
 }

@@ -81,12 +81,18 @@ async function parseExif(buffer) {
       camera = `${make} ${model}`.trim();
     }
 
+    const taken = exif.DateTimeOriginal || exif.CreateDate || exif.ModifyDate;
+    const date = taken instanceof Date && !Number.isNaN(taken.getTime())
+      ? taken.toISOString()
+      : "";
+
     return {
       camera: camera || "",
       lens: exif.LensModel || exif.Lens || "",
       iso: exif.ISO != null ? String(exif.ISO) : "",
       shutter: formatShutter(exif.ExposureTime),
       aperture: formatAperture(exif.FNumber),
+      date,
     };
   } catch {
     return {};
@@ -143,7 +149,7 @@ const server = createServer(async (req, res) => {
       const buffer = await readBody(req);
       const exif = await parseExif(buffer);
       emitLog(
-        `exif camera="${exif.camera || DEFAULT_CAMERA}" lens="${exif.lens || DEFAULT_LENS}" iso=${exif.iso || "—"} ${exif.shutter || "—"} ${exif.aperture || "—"}`
+        `exif camera="${exif.camera || DEFAULT_CAMERA}" lens="${exif.lens || DEFAULT_LENS}" iso=${exif.iso || "—"} ${exif.shutter || "—"} ${exif.aperture || "—"} date=${exif.date || "—"}`
       );
       send(res, 200, {
         camera: exif.camera || DEFAULT_CAMERA,
@@ -151,6 +157,7 @@ const server = createServer(async (req, res) => {
         iso: exif.iso,
         shutter: exif.shutter,
         aperture: exif.aperture,
+        date: exif.date,
       });
       return;
     }
@@ -186,6 +193,8 @@ const server = createServer(async (req, res) => {
       await writeFile(originalPath, buffer);
 
       const processed = await processImageFile(originalPath, baseName, (line) => emitLog(line));
+      const exif = await parseExif(buffer);
+      const date = String(payload.date || exif.date || new Date().toISOString());
       emitLog(`read ${GALLERY_DATA}`);
       const photos = await readGallery();
       const entry = {
@@ -194,6 +203,7 @@ const server = createServer(async (req, res) => {
         imageHiRes: `photos/full/${processed.file}`,
         alt: String(payload.alt || title).trim(),
         aspect: processed.aspect,
+        date,
         camera: String(payload.camera || DEFAULT_CAMERA).trim(),
         lens: String(payload.lens || DEFAULT_LENS).trim(),
         iso: String(payload.iso || "").trim(),

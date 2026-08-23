@@ -43,10 +43,17 @@ themeToggle.addEventListener("click", () => {
   applyTheme(currentTheme() === "dark" ? "light" : "dark");
 });
 
+function photoTime(photo) {
+  const time = Date.parse(photo?.date || "");
+  return Number.isNaN(time) ? 0 : time;
+}
+
+const GALLERY = [...PHOTOGRAPHS].sort((a, b) => photoTime(b) - photoTime(a));
+
 function renderGallery() {
   const fragment = document.createDocumentFragment();
 
-  PHOTOGRAPHS.forEach((photo, index) => {
+  GALLERY.forEach((photo, index) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "gallery__item";
@@ -80,7 +87,7 @@ function fillDefinitionList(listEl, entries) {
 }
 
 function populatePhoto(index) {
-  const photo = PHOTOGRAPHS[index];
+  const photo = GALLERY[index];
   activePhotoIndex = index;
 
   photoImage.src = photo.imageHiRes;
@@ -147,7 +154,7 @@ function openPhoto(index, trigger) {
 }
 
 function showNextPhoto() {
-  const next = (activePhotoIndex + 1) % PHOTOGRAPHS.length;
+  const next = (activePhotoIndex + 1) % GALLERY.length;
   populatePhoto(next);
 }
 
