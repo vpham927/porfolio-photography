@@ -4,9 +4,8 @@ const FOCUSABLE =
 const galleryEl = document.getElementById("gallery");
 const photoModal = document.getElementById("photo-modal");
 const siteDeck = document.getElementById("site-deck");
-const yearEl = document.getElementById("year");
-const homePane = document.getElementById("page");
-const photoPane = document.getElementById("photographs");
+const photoPane = document.getElementById("main");
+const resumePane = document.getElementById("resume-pane");
 
 const photoImage = document.getElementById("photo-image");
 const photoTitle = document.getElementById("photo-title");
@@ -19,7 +18,9 @@ let activePhotoIndex = 0;
 let lastFocus = null;
 let activeModal = null;
 
-yearEl.textContent = String(new Date().getFullYear());
+document.querySelectorAll(".js-year").forEach((el) => {
+  el.textContent = String(new Date().getFullYear());
+});
 
 const themeToggle = document.getElementById("theme-toggle");
 const themeToggleLabel = document.getElementById("theme-toggle-label");
@@ -217,76 +218,77 @@ document.addEventListener("keydown", (event) => {
     return;
   }
 
-  if (event.key === "Escape" && isPhotosView()) {
-    openHome("top");
+  if (event.key === "Escape" && isResumeView()) {
+    openPhotos();
   }
 });
 
 renderGallery();
 
-function isPhotosView() {
-  return document.documentElement.dataset.view === "photos";
+function isResumeView() {
+  return document.documentElement.dataset.view === "resume";
 }
 
-function scrollHomeTo(id, smooth = true) {
-  const target = document.getElementById(id);
-  if (!homePane || !target) return;
+function setView(view) {
+  document.documentElement.dataset.view = view;
+  photoPane.inert = view === "resume";
+  resumePane.inert = view !== "resume";
+}
 
+function scrollResumeTo(id, smooth = true) {
+  const target = document.getElementById(id);
+  if (!target) return;
+
+  // Offset by the pane's top padding so the target clears the fixed site bar.
   const top =
     target.getBoundingClientRect().top -
-    homePane.getBoundingClientRect().top +
-    homePane.scrollTop;
+    resumePane.getBoundingClientRect().top +
+    resumePane.scrollTop -
+    parseFloat(getComputedStyle(resumePane).paddingTop);
 
-  homePane.scrollTo({ top, behavior: smooth ? "smooth" : "auto" });
+  resumePane.scrollTo({ top, behavior: smooth ? "smooth" : "auto" });
 }
 
-function openPhotos({ skipHistory = false } = {}) {
-  document.documentElement.dataset.view = "photos";
-  photoPane.scrollTo({ top: 0 });
+function openPhotos({ skipHistory = false, smooth = false } = {}) {
+  setView("photos");
+  photoPane.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
 
-  if (!skipHistory && location.hash !== "#photographs") {
-    history.pushState({ view: "photos" }, "", "#photographs");
+  if (!skipHistory && location.hash) {
+    history.pushState({ view: "photos" }, "", location.pathname + location.search);
   }
 }
 
-function openHome(id, { skipHistory = false, smooth = false } = {}) {
-  document.documentElement.dataset.view = "home";
-  if (id) scrollHomeTo(id, smooth);
+function openResume(id, { skipHistory = false, smooth = false } = {}) {
+  setView("resume");
+  scrollResumeTo(id, smooth);
 
   if (!skipHistory) {
-    history.pushState({ view: "home" }, "", id ? `#${id}` : "#top");
+    history.pushState({ view: "resume" }, "", `#${id}`);
   }
 }
 
 function syncViewFromHash() {
-  if (location.hash === "#photographs") {
-    openPhotos({ skipHistory: true });
-    return;
-  }
-
   const id = location.hash.replace("#", "");
-  openHome(id || "top", { skipHistory: true });
+  const target = id && document.getElementById(id);
+
+  if (target && resumePane.contains(target)) {
+    openResume(id, { skipHistory: true });
+  } else {
+    openPhotos({ skipHistory: true });
+  }
 }
 
 document.querySelectorAll("[data-open-photos]").forEach((link) => {
   link.addEventListener("click", (event) => {
     event.preventDefault();
-    openPhotos();
+    openPhotos({ smooth: !isResumeView() });
   });
 });
 
-document.querySelectorAll("[data-home-target]").forEach((link) => {
+document.querySelectorAll("[data-open-resume]").forEach((link) => {
   link.addEventListener("click", (event) => {
     event.preventDefault();
-    openHome(link.dataset.homeTarget, { smooth: !isPhotosView() });
-  });
-});
-
-document.querySelectorAll(".explore").forEach((link) => {
-  link.addEventListener("click", (event) => {
-    const id = link.getAttribute("href").replace("#", "");
-    event.preventDefault();
-    openHome(id, { smooth: true });
+    openResume(link.dataset.openResume, { smooth: isResumeView() });
   });
 });
 
