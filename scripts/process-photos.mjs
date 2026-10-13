@@ -27,5 +27,6 @@ for (const file of files) {
   console.log(`    image: "photos/thumbs/${result.file}",`);
   console.log(`    imageHiRes: "photos/full/${result.file}",`);
   console.log(`    aspect: "${result.aspect}",`);
+  console.log(`    monochrome: ${result.monochrome},`);
   console.log("");
 }

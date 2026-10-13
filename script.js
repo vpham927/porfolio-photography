@@ -49,33 +49,22 @@ function photoTime(photo) {
   return Number.isNaN(time) ? 0 : time;
 }
 
-// Rows are matched against each photo's film simulation, in this order.
-// Set `style` on a photo in gallery-data.js to place it in a row by title.
-const STYLE_ROWS = [
-  { title: "Warm Tones", match: /nostalgic|classic neg|pro neg|reala|astia/i },
-  { title: "Classic Chrome", match: /classic chrome|eterna|bleach/i },
-  { title: "Vivid", match: /velvia|provia/i },
-  { title: "Monochrome / ACROS", match: /mono|acros|sepia/i },
-];
-const FALLBACK_ROW = "Natural";
+// Two rows: black & white, then everything in colour. `monochrome` is measured
+// from the pixels by the add-photos script; the film sim is a fallback for
+// entries that predate it.
+const MONO_ROW = "Black & White";
+const COLOUR_ROW = "Colour";
 
-function photoStyle(photo) {
-  if (photo.style) return photo.style;
-  const sim = photo.recipe?.["Film Sim"] || "";
-  return STYLE_ROWS.find((row) => row.match.test(sim))?.title || FALLBACK_ROW;
+function isMonochrome(photo) {
+  if (typeof photo.monochrome === "boolean") return photo.monochrome;
+  return /mono|acros|sepia/i.test(photo.recipe?.["Film Sim"] || "");
 }
 
 function groupByStyle(photos) {
-  const groups = new Map(
-    [...STYLE_ROWS.map((row) => row.title), FALLBACK_ROW].map((title) => [title, []])
-  );
-
+  const groups = new Map([[COLOUR_ROW, []], [MONO_ROW, []]]);
   photos.forEach((photo) => {
-    const style = photoStyle(photo);
-    if (!groups.has(style)) groups.set(style, []);
-    groups.get(style).push(photo);
+    groups.get(isMonochrome(photo) ? MONO_ROW : COLOUR_ROW).push(photo);
   });
-
   return [...groups].filter(([, items]) => items.length > 0);
 }
 
@@ -146,6 +135,9 @@ function renderGallery() {
   galleryEl.appendChild(fragment);
 }
 
+// Auto-scroll speed in pixels per second.
+const ROW_SPEED = 18;
+
 // The track holds one "set" of cards (the row's photos, repeated until it is
 // at least as wide as the row) followed by an identical copy of that set. The
 // keyframes slide the track by exactly -50%, so the copy lands where the
@@ -160,6 +152,9 @@ function fillTracks() {
     // exact width of one set and -50% is always a whole number of sets.
     const baseWidth = track.scrollWidth;
     const repeats = Math.max(1, Math.ceil(rowWidth / baseWidth));
+
+    // Same pixel speed on every row, however many photos it holds.
+    track.style.setProperty("--row-duration", `${(baseWidth * repeats) / ROW_SPEED}s`);
 
     const copies = repeats * 2 - 1;
     for (let r = 0; r < copies; r++) {

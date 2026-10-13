@@ -273,6 +273,7 @@ const server = createServer(async (req, res) => {
         imageHiRes: `photos/full/${processed.file}`,
         alt: String(payload.alt || title).trim(),
         aspect: processed.aspect,
+        monochrome: processed.monochrome,
         date,
         camera: String(payload.camera || DEFAULT_CAMERA).trim(),
         lens: String(payload.lens || DEFAULT_LENS).trim(),

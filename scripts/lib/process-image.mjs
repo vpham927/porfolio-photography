@@ -90,11 +90,15 @@ export async function processImageFile(sourcePath, baseName, onLog = () => {}) {
   ]);
 
   const thumbMeta = await sharp(thumbOut).metadata();
-  onLog(`ok ${baseName} thumb ${thumbMeta.width}×${thumbMeta.height}`);
+  const monochrome = await isMonochrome(thumbOut);
+  onLog(
+    `ok ${baseName} thumb ${thumbMeta.width}×${thumbMeta.height}${monochrome ? " (black & white)" : ""}`
+  );
 
   return {
     file: baseName,
     aspect: `${thumbMeta.width} / ${thumbMeta.height}`,
+    monochrome,
   };
 }
 
@@ -119,4 +123,27 @@ export function sortPhotosByDate(photos) {
 export async function writeGallery(photos) {
   const body = `const PHOTOGRAPHS = ${JSON.stringify(sortPhotosByDate(photos), null, 2)};\n`;
   await writeFile(GALLERY_DATA, body);
+}
+
+// Average per-pixel spread between the strongest and weakest RGB channel on a
+// small downscale. Black-and-white images (including toned ones) sit near 0;
+// even muted colour photos land well above MONOCHROME_THRESHOLD.
+export const MONOCHROME_THRESHOLD = 10;
+
+export async function colourfulness(imagePath) {
+  const data = await sharp(imagePath)
+    .resize(64, 64, { fit: "inside" })
+    .removeAlpha()
+    .raw()
+    .toBuffer();
+
+  let total = 0;
+  for (let i = 0; i < data.length; i += 3) {
+    total += Math.max(data[i], data[i + 1], data[i + 2]) - Math.min(data[i], data[i + 1], data[i + 2]);
+  }
+  return total / (data.length / 3);
+}
+
+export async function isMonochrome(imagePath) {
+  return (await colourfulness(imagePath)) < MONOCHROME_THRESHOLD;
 }

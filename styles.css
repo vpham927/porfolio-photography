@@ -288,7 +288,7 @@ button {
 .gallery {
   --row-height: clamp(190px, 24vw, 300px);
   --row-gap: 0.75rem;
-  --row-duration: 48s;
+  --row-duration: 120s; /* overridden per row from its width in script.js */
   display: grid;
   /* minmax(0, …) stops the max-content tracks from widening the rows */
   grid-template-columns: minmax(0, 1fr);

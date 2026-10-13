@@ -12,7 +12,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/320s",
     "aperture": "f/11",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "20260924 DSCF0450",
@@ -27,7 +28,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/320s",
     "aperture": "f/5",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": true
   },
   {
     "title": "20260924 DSCF0338",
@@ -42,7 +44,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/400s",
     "aperture": "f/16",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "20260923 DSCF0273",
@@ -57,7 +60,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/180s",
     "aperture": "f/18",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF3198",
@@ -72,7 +76,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/180s",
     "aperture": "f/10",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF3151",
@@ -87,7 +92,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/4000s",
     "aperture": "f/2.8",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": true
   },
   {
     "title": "DSCF2914",
@@ -102,7 +108,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/250s",
     "aperture": "f/2.8",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF2853",
@@ -117,7 +124,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/250s",
     "aperture": "f/2.8",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF2774",
@@ -132,7 +140,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/60s",
     "aperture": "f/5.6",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF2753",
@@ -147,7 +156,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/80s",
     "aperture": "f/11",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF2700",
@@ -162,7 +172,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/80s",
     "aperture": "f/16",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF2483",
@@ -177,7 +188,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/1000s",
     "aperture": "f/2.8",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF2449",
@@ -192,7 +204,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/30s",
     "aperture": "f/4.5",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF2128",
@@ -207,7 +220,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/1500s",
     "aperture": "f/7.1",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF1704",
@@ -222,7 +236,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/4s",
     "aperture": "f/18",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF1617",
@@ -237,7 +252,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/500s",
     "aperture": "f/4.5",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": true
   },
   {
     "title": "DSCF1499",
@@ -252,7 +268,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/500s",
     "aperture": "f/8",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": false
   },
   {
     "title": "DSCF1481",
@@ -267,7 +284,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/500s",
     "aperture": "f/5",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": true
   },
   {
     "title": "20260828 DSCF1133",
@@ -282,7 +300,8 @@ const PHOTOGRAPHS = [
     "shutter": "1/300s",
     "aperture": "f/4.5",
     "recipeTitle": "None",
-    "recipe": {}
+    "recipe": {},
+    "monochrome": true
   },
   {
     "title": "Raindrops on the Petals",
@@ -308,7 +327,8 @@ const PHOTOGRAPHS = [
       "High ISO NR": "-4",
       "Clarity": "-0"
     },
-    "date": "2026-08-22T08:13:56.000Z"
+    "date": "2026-08-22T08:13:56.000Z",
+    "monochrome": false
   },
   {
     "title": "Random Station",
@@ -336,7 +356,8 @@ const PHOTOGRAPHS = [
       "High ISO NR": "-4",
       "Clarity": "-1"
     },
-    "date": "2026-08-15T21:43:15.000Z"
+    "date": "2026-08-15T21:43:15.000Z",
+    "monochrome": true
   },
   {
     "title": "Farringdon",
@@ -351,7 +372,8 @@ const PHOTOGRAPHS = [
     "aperture": "f/2.8",
     "recipeTitle": "None",
     "recipe": {},
-    "date": "2026-08-15T12:44:23.000Z"
+    "date": "2026-08-15T12:44:23.000Z",
+    "monochrome": false
   },
   {
     "title": "Stratford Slide",
@@ -377,7 +399,8 @@ const PHOTOGRAPHS = [
       "High ISO NR": "-4",
       "Clarity": "-3"
     },
-    "date": "2026-08-12T18:44:06.000Z"
+    "date": "2026-08-12T18:44:06.000Z",
+    "monochrome": false
   },
   {
     "title": "Stratford Bridge",
@@ -405,7 +428,8 @@ const PHOTOGRAPHS = [
       "High ISO NR": "-4",
       "Clarity": "-1"
     },
-    "date": "2026-08-12T18:36:04.000Z"
+    "date": "2026-08-12T18:36:04.000Z",
+    "monochrome": true
   },
   {
     "title": "Chestnut Tree",
@@ -419,7 +443,8 @@ const PHOTOGRAPHS = [
     "aperture": "f/4.5",
     "recipeTitle": "None",
     "recipe": {},
-    "date": "2026-08-12T18:22:36.000Z"
+    "date": "2026-08-12T18:22:36.000Z",
+    "monochrome": false
   },
   {
     "title": "West Ham Stadium",
@@ -444,7 +469,8 @@ const PHOTOGRAPHS = [
       "High ISO NR": "-4",
       "Clarity": "-3"
     },
-    "date": "2026-08-12T18:08:01.000Z"
+    "date": "2026-08-12T18:08:01.000Z",
+    "monochrome": false
   },
   {
     "title": "Stratford Buildings #1",
@@ -471,7 +497,8 @@ const PHOTOGRAPHS = [
       "High ISO NR": "-4",
       "Clarity": "-1"
     },
-    "date": "2026-08-12T17:37:38.000Z"
+    "date": "2026-08-12T17:37:38.000Z",
+    "monochrome": true
   },
   {
     "title": "Flying Daisy",
@@ -496,7 +523,8 @@ const PHOTOGRAPHS = [
       "High ISO NR": "-4",
       "Clarity": "-3"
     },
-    "date": "2026-08-12T17:21:36.000Z"
+    "date": "2026-08-12T17:21:36.000Z",
+    "monochrome": false
   },
   {
     "title": "Stratford Buildings #2",
@@ -523,7 +551,8 @@ const PHOTOGRAPHS = [
       "High ISO NR": "-4",
       "Clarity": "-1"
     },
-    "date": "2026-08-12T17:15:23.000Z"
+    "date": "2026-08-12T17:15:23.000Z",
+    "monochrome": true
   },
   {
     "title": "Big Easy, Stratford",
@@ -550,6 +579,7 @@ const PHOTOGRAPHS = [
       "High ISO NR": "-4",
       "Clarity": "-1"
     },
-    "date": "2026-08-11T18:22:05.000Z"
+    "date": "2026-08-11T18:22:05.000Z",
+    "monochrome": true
   }
 ];
