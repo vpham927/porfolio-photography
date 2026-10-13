@@ -1,12 +1,14 @@
 import { createServer } from "node:http";
-import { mkdir, writeFile, readFile } from "node:fs/promises";
+import { mkdir, writeFile, readFile, rm } from "node:fs/promises";
 import path from "node:path";
 import { exec } from "node:child_process";
 import exifr from "exifr";
 import { RECIPES, DEFAULT_CAMERA, DEFAULT_LENS } from "./recipes.mjs";
 import {
+  FULL_DIR,
   GALLERY_DATA,
   INPUT_DIR,
+  THUMB_DIR,
   processImageFile,
   readGallery,
   slugify,
@@ -15,7 +17,7 @@ import {
 } from "./lib/process-image.mjs";
 
 const HOST = "127.0.0.1";
-const PORT = 3847;
+const PORT = Number(process.env.PORT) || 3847;
 const HTML_PATH = path.resolve(import.meta.dirname, "add-photos.html");
 const MAX_BYTES = 80 * 1024 * 1024;
 const logClients = new Set();
@@ -144,6 +146,74 @@ const server = createServer(async (req, res) => {
       return;
     }
 
+    if (req.method === "GET" && url.pathname === "/api/photos") {
+      const photos = await readGallery();
+      send(res, 200, {
+        photos: photos.map((photo) => ({
+          title: photo.title,
+          image: photo.image,
+          recipeTitle: photo.recipeTitle || "None",
+          date: photo.date || "",
+        })),
+      });
+      return;
+    }
+
+    // Thumbnails for the "on the site" list. basename() keeps requests inside THUMB_DIR.
+    if (req.method === "GET" && url.pathname.startsWith("/photos/thumbs/")) {
+      const file = path.basename(decodeURIComponent(url.pathname));
+      try {
+        const body = await readFile(path.join(THUMB_DIR, file));
+        res.writeHead(200, { "Content-Type": "image/jpeg", "Cache-Control": "no-store" });
+        res.end(body);
+      } catch {
+        send(res, 404, { error: "Not found." });
+      }
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname === "/api/photo/delete") {
+      const payload = JSON.parse((await readBody(req)).toString("utf8"));
+      const image = String(payload.image || "");
+      emitLog(`POST /api/photo/delete image="${image}"`);
+
+      const photos = await readGallery();
+      const photo = photos.find((entry) => entry.image === image);
+      if (!photo) {
+        emitLog(`error: No photo with image "${image}".`, "error");
+        send(res, 404, { error: "Photo not found in the gallery." });
+        return;
+      }
+
+      const remaining = photos.filter((entry) => entry !== photo);
+      emitLog(`remove gallery entry "${photo.title}" → photos/gallery-data.js (${remaining.length} photos)`);
+      await writeGallery(remaining);
+
+      // Only delete the generated copies; photos/originals is gitignored, so the
+      // original there may be the only copy and is left alone.
+      for (const [dir, rel] of [
+        [THUMB_DIR, photo.image],
+        [FULL_DIR, photo.imageHiRes],
+      ]) {
+        if (!rel) continue;
+        const file = path.basename(rel);
+        const stillUsed = remaining.some(
+          (entry) => path.basename(entry.image || "") === file || path.basename(entry.imageHiRes || "") === file
+        );
+        if (stillUsed) {
+          emitLog(`keep photos/${path.basename(dir)}/${file} (used by another entry)`);
+          continue;
+        }
+        await rm(path.join(dir, file), { force: true });
+        emitLog(`delete photos/${path.basename(dir)}/${file}`);
+      }
+      emitLog(`original (if any) kept in photos/originals/`);
+      emitLog(`done removing "${photo.title}"`);
+
+      send(res, 200, { ok: true, title: photo.title });
+      return;
+    }
+
     if (req.method === "POST" && url.pathname === "/api/preview") {
       emitLog(`POST /api/preview (${(Number(req.headers["content-length"]) || 0) / 1024 | 0} KB)`);
       const buffer = await readBody(req);
@@ -235,7 +305,7 @@ const server = createServer(async (req, res) => {
 server.listen(PORT, HOST, () => {
   const url = `http://${HOST}:${PORT}`;
   emitLog(`Add photos: ${url}`);
-  emitLog("Drop images, pick a recipe, then add them to the gallery.");
+  emitLog("Drop images, pick a recipe, then add them to the gallery. Remove photos from the list below.");
   emitLog(`Gallery data: ${GALLERY_DATA}`);
   exec(`open "${url}"`);
 });

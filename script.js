@@ -49,31 +49,159 @@ function photoTime(photo) {
   return Number.isNaN(time) ? 0 : time;
 }
 
-const GALLERY = [...PHOTOGRAPHS].sort((a, b) => photoTime(b) - photoTime(a));
+// Rows are matched against each photo's film simulation, in this order.
+// Set `style` on a photo in gallery-data.js to place it in a row by title.
+const STYLE_ROWS = [
+  { title: "Warm Tones", match: /nostalgic|classic neg|pro neg|reala|astia/i },
+  { title: "Classic Chrome", match: /classic chrome|eterna|bleach/i },
+  { title: "Vivid", match: /velvia|provia/i },
+  { title: "Monochrome / ACROS", match: /mono|acros|sepia/i },
+];
+const FALLBACK_ROW = "Natural";
+
+function photoStyle(photo) {
+  if (photo.style) return photo.style;
+  const sim = photo.recipe?.["Film Sim"] || "";
+  return STYLE_ROWS.find((row) => row.match.test(sim))?.title || FALLBACK_ROW;
+}
+
+function groupByStyle(photos) {
+  const groups = new Map(
+    [...STYLE_ROWS.map((row) => row.title), FALLBACK_ROW].map((title) => [title, []])
+  );
+
+  photos.forEach((photo) => {
+    const style = photoStyle(photo);
+    if (!groups.has(style)) groups.set(style, []);
+    groups.get(style).push(photo);
+  });
+
+  return [...groups].filter(([, items]) => items.length > 0);
+}
+
+const STYLE_GROUPS = groupByStyle(
+  [...PHOTOGRAPHS].sort((a, b) => photoTime(b) - photoTime(a))
+);
+
+// Flattened in row order so "Next Photo" walks the rows as they appear.
+const GALLERY = STYLE_GROUPS.flatMap(([, items]) => items);
+
+function createCard(photo, index, { clone = false } = {}) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "gallery__item";
+  button.style.aspectRatio = photo.aspect;
+  button.dataset.index = String(index);
+
+  if (clone) {
+    button.tabIndex = -1;
+    button.setAttribute("aria-hidden", "true");
+    button.dataset.clone = "";
+  } else {
+    button.setAttribute("aria-label", `View ${photo.title}`);
+  }
+
+  const img = document.createElement("img");
+  img.src = photo.image;
+  img.alt = clone ? "" : photo.alt || photo.title;
+  // Originals load up front so nothing pops in mid-scroll; clones reuse the
+  // same (by then cached) thumbnails.
+  img.loading = clone ? "lazy" : "eager";
+  img.decoding = "async";
+
+  button.appendChild(img);
+  return button;
+}
 
 function renderGallery() {
   const fragment = document.createDocumentFragment();
+  let offset = 0;
 
-  GALLERY.forEach((photo, index) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "gallery__item";
-    button.style.aspectRatio = photo.aspect;
-    button.dataset.index = String(index);
-    button.setAttribute("aria-label", `View ${photo.title}`);
+  STYLE_GROUPS.forEach(([title, items], rowIndex) => {
+    const row = document.createElement("section");
+    row.className = "style-row";
+    if (rowIndex % 2 === 0) row.classList.add("style-row--reverse");
+    row.setAttribute("aria-label", title);
 
-    const img = document.createElement("img");
-    img.src = photo.image;
-    img.alt = photo.alt || photo.title;
-    img.loading = "lazy";
-    img.decoding = "async";
+    const heading = document.createElement("h2");
+    heading.className = "style-row__title";
+    heading.textContent = title;
 
-    button.appendChild(img);
-    fragment.appendChild(button);
+    const viewport = document.createElement("div");
+    viewport.className = "style-row__viewport";
+
+    const track = document.createElement("div");
+    track.className = "style-row__track";
+
+    const start = offset;
+    items.forEach((photo, i) => track.appendChild(createCard(photo, start + i)));
+    offset += items.length;
+
+    viewport.appendChild(track);
+    row.append(heading, viewport);
+    fragment.appendChild(row);
   });
 
+  // Clones are added by the ResizeObserver below once the rows have a width.
   galleryEl.appendChild(fragment);
 }
+
+// The track holds one "set" of cards (the row's photos, repeated until it is
+// at least as wide as the row) followed by an identical copy of that set. The
+// keyframes slide the track by exactly -50%, so the copy lands where the
+// original started and the loop has no visible seam.
+function fillTracks() {
+  galleryEl.querySelectorAll(".style-row__track").forEach((track) => {
+    track.querySelectorAll("[data-clone]").forEach((el) => el.remove());
+
+    const originals = [...track.children];
+    const rowWidth = track.parentElement.clientWidth;
+    // Cards are spaced with margin-right (not gap), so scrollWidth is the
+    // exact width of one set and -50% is always a whole number of sets.
+    const baseWidth = track.scrollWidth;
+    const repeats = Math.max(1, Math.ceil(rowWidth / baseWidth));
+
+    const copies = repeats * 2 - 1;
+    for (let r = 0; r < copies; r++) {
+      originals.forEach((card) => {
+        const photo = GALLERY[Number(card.dataset.index)];
+        track.appendChild(createCard(photo, Number(card.dataset.index), { clone: true }));
+      });
+    }
+  });
+}
+
+let lastGalleryWidth = 0;
+new ResizeObserver(([entry]) => {
+  const width = Math.round(entry.contentRect.width);
+  if (width === lastGalleryWidth) return;
+  lastGalleryWidth = width;
+  fillTracks();
+}).observe(galleryEl);
+
+// Touch devices have no hover, so hold the row still while it is being
+// touched and for a moment afterwards.
+const touchResume = new WeakMap();
+
+galleryEl.addEventListener("pointerdown", (event) => {
+  if (event.pointerType === "mouse") return;
+  const row = event.target.closest(".style-row");
+  if (!row) return;
+  clearTimeout(touchResume.get(row));
+  row.classList.add("is-paused");
+});
+
+["pointerup", "pointercancel"].forEach((type) => {
+  galleryEl.addEventListener(type, (event) => {
+    if (event.pointerType === "mouse") return;
+    const row = event.target.closest(".style-row");
+    if (!row) return;
+    touchResume.set(
+      row,
+      setTimeout(() => row.classList.remove("is-paused"), 2500)
+    );
+  });
+});
 
 function fillDefinitionList(listEl, entries) {
   listEl.replaceChildren();
